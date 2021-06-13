@@ -118,7 +118,7 @@ export const getPopularVideos = () => async (dispatch, getState) => {
     }
  }
  
- export const getVideosBySearch = keyword => async dispatch => {
+ export const getVideosBySearch = (keyword,order) => async dispatch => {
     try {
        dispatch({
           type: SEARCH_VIDEO_REQUEST,
@@ -129,6 +129,7 @@ export const getPopularVideos = () => async (dispatch, getState) => {
  
              maxResults: 20,
              q: keyword,
+             order: order,
              type: 'video,channel',
           },
        })

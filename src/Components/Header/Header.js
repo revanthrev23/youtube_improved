@@ -4,7 +4,6 @@ import { FaBars } from "react-icons/fa"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdNotifications, MdApps } from "react-icons/md"
 import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
 import axios from 'axios'
 import jsonpAdapter from 'axios-getjsonp'
 
@@ -14,11 +13,10 @@ const Header = ({handleSidebar}) => {
 
     const history = useHistory();
 
-    const {photoURL} = useSelector(state => state.auth?.user)
-
     const handleSubmit = (e) => {
         e.preventDefault();
         history.push(`/search/${input}`)
+        setSearch(null);
     }
 
     var result;
@@ -55,27 +53,24 @@ const Header = ({handleSidebar}) => {
             }
             timeout = setTimeout(() => {
                 const res = fetchData(input);
-                setSearch(res);
-            },2000);
+            },500);
         } else {
             setSearch(null);
         }  
     },[input])
 
-    console.log(search);
-
     const searchItem = (id) => {
-        setInput(search[id]);
         console.log("Input is:", input);
+        setSearch(null);
+        setInput(null);
         history.push(`/search/${search[id]}`);
-        setSearch(null)
     }
 
     return (
         <>
         <div className="header">
             <FaBars className="header__menu" onClick={() => handleSidebar()} size={26} />
-            <img src="http://pngimg.com/uploads/youtube/youtube_PNG2.png" alt="" className="header__logo"/>
+            <img src="http://pngimg.com/uploads/youtube/youtube_PNG2.png" onClick={() => history.push(`/`)} alt="" className="header__logo"/>
 
             <form onSubmit={handleSubmit}>
                 <input type='text' placeholder='Search' value={input} onChange={e=>{setInput(e.target.value)}} />
@@ -87,7 +82,7 @@ const Header = ({handleSidebar}) => {
          <div className='header__icons'>
             <MdNotifications size={28} />
             <MdApps size={28} />
-            <img src={photoURL} alt='avatar' />
+            <img src="http://pngimg.com/uploads/youtube/youtube_PNG2.png" alt='avatar' />
          </div>
 
         </div>
